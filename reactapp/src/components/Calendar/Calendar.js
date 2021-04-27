@@ -17,7 +17,7 @@ class Calendar extends Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:80/get_calendar')
+        fetch('http://0.0.0.0:80/get_calendar')
             .then(response => response.json())
             .then(({ posts }) => {
                 this.setState({ posts });
@@ -35,13 +35,15 @@ class Calendar extends Component {
     setMoodColor({date}) {
         // format given date
         let entryDate = new Date(date).toISOString().substr(0, 10);
+        console.log("Entry Date is "+entryDate);
         let entryScore;
         for (let i = 0; i < this.state.posts.length; i++){
             // loop through array until matching entry
-            console.log(this.state.posts[i].date);
+            console.log("State post date is" +this.state.posts[i].date);
             if (this.state.posts[i].date === entryDate){
                 // sets mood rate of the entry
                 entryScore = this.state.posts[i].score;
+                console.log("entryScore is "+ entryScore);
                 break;
             }
         }
@@ -52,7 +54,7 @@ class Calendar extends Component {
             return 'good-mood';
         } else if (entryScore >= 45) {
             return 'ok-mood';
-        } else {
+        } else if(entryScore <45 && entryScore >=10){
             return 'bad-mood';
         }
     }
